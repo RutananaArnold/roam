@@ -13,5 +13,7 @@ class Doctor {
   String location;
   @HiveField(3)
   String description;
-  Doctor(this.name, this.type, this.location, this.description);
+  @HiveField(4)
+  var image;
+  Doctor(this.name, this.type, this.location, this.description, this.image);
 }

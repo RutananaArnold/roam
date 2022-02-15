@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_health_care_app/model/doctor.dart';
 import 'package:flutter_health_care_app/widgets/palette.dart';
@@ -37,11 +39,26 @@ class _UploadsState extends State<Uploads> {
                   itemCount: box.values.length,
                   itemBuilder: (context, index) {
                     Doctor currentDoctor = box.getAt(index);
+                    print(currentDoctor.image);
                     return Container(
                       child: ListTile(
-                        leading: const CircleAvatar(
-                          backgroundImage: AssetImage("assets/doctorPic.png"),
-                          radius: 50,
+                        leading: ClipRRect(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(13)),
+                          child: Container(
+                            height: 120,
+                            width: 120,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.white,
+                            ),
+                            child: Image.file(
+                              File(currentDoctor.image),
+                              height: 120,
+                              width: 120,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
                         title: Text(currentDoctor.name),
                         subtitle: Column(

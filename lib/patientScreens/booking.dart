@@ -172,7 +172,7 @@ class _BookingState extends State<Booking> {
                           backgroundColor:
                               status == true ? Colors.green : Colors.red,
                         ),
-                        onLongPress: () {
+                        onTap: () {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>

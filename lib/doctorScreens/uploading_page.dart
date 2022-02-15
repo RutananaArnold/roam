@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_health_care_app/doctorScreens/uploads.dart';
 import 'package:flutter_health_care_app/model/doctor.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_health_care_app/widgets/RoundedInputField.dart';
 import 'package:flutter_health_care_app/widgets/palette.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:another_flushbar/flushbar.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UploadingPage extends StatefulWidget {
   const UploadingPage({Key key}) : super(key: key);
@@ -23,6 +26,21 @@ class _UploadingPageState extends State<UploadingPage> {
   final descriptionController = TextEditingController();
 
   bool _isLoading = false;
+
+  File _image;
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +66,27 @@ class _UploadingPageState extends State<UploadingPage> {
             ),
             const SizedBox(
               height: 20,
+            ),
+            Container(
+              child: Column(
+                children: [
+                  IconButton(
+                    onPressed: getImage,
+                    icon: const Icon(
+                      Icons.camera,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Center(
+                    child: _image == null
+                        ? const Text('No image selected.')
+                        : Image.file(_image),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 10,
             ),
             RoundedInputField(
               hintText: "Field of specialisation",
@@ -82,10 +121,11 @@ class _UploadingPageState extends State<UploadingPage> {
 
   //upload logic
   void addInfor() {
+    print(_image.path);
     //storing key-value pairs
     Box<Doctor> hostelBox = Hive.box<Doctor>('doctorBox');
     hostelBox.add(Doctor(nameController.text, fieldController.text,
-        locationController.text, descriptionController.text));
+        locationController.text, descriptionController.text, _image.path));
     Navigator.of(context).pop();
 
     print("Info added");

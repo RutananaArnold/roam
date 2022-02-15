@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
-import 'package:flutter_health_care_app/doctorScreens/01_login.dart';
+import 'package:flutter_health_care_app/doctorScreens/manager_auth.dart';
 import 'package:flutter_health_care_app/patientScreens/authgate.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -42,11 +42,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               height: 10,
             ),
             Center(
-              child: GestureDetector(
+              child: InkWell(
                 onTap: () {
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                          builder: (BuildContext context) => Login()),
+                          builder: (BuildContext context) => ManagerAuthGate()),
                       (route) => true);
                 },
                 child: const GlowIcon(
@@ -65,7 +65,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               height: 10,
             ),
             Center(
-              child: GestureDetector(
+              child: InkWell(
                 onTap: () {
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(

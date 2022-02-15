@@ -1,7 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_health_care_app/doctorScreens/profile/TabButton.dart';
 import 'package:flutter_health_care_app/doctorScreens/profile/TabLabel.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // import '../packages_exporter.dart';
 import 'profile_pic.dart';
@@ -15,22 +15,11 @@ class UserProfileBody extends StatefulWidget {
 }
 
 class _UserProfileBodyState extends State<UserProfileBody> {
-  //retrieving email from sharedperference
-  String personEmail = " ";
+  FirebaseAuth signout = FirebaseAuth.instance;
+  FirebaseAuth signedin = FirebaseAuth.instance;
 
-  @override
-  void initState() {
-    super.initState();
-    getInfor();
-  }
-
-  Future<String> getInfor() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-
-    personEmail = sharedPreferences.getString("email");
-    setState(() {
-      personEmail = (sharedPreferences.getString("email") ?? 'No email found');
-    });
+  signingout() async {
+    await signout.signOut();
   }
 
   @override
@@ -50,7 +39,7 @@ class _UserProfileBodyState extends State<UserProfileBody> {
             padding: EdgeInsets.all(10),
             child: Center(
               child: Text(
-                "$personEmail",
+                "Signed in as: " + "${signedin.currentUser.email}",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -62,24 +51,6 @@ class _UserProfileBodyState extends State<UserProfileBody> {
               ),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.all(10),
-            child: Center(
-              child: Text(
-                "+256 778 456783",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 17,
-                  letterSpacing: 0.5,
-                  fontWeight: FontWeight.w400,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-            ),
-          ),
-          // Spacer(flex: 2),
-          // SignOutButton(),
           const SizedBox(height: 5.0),
           const TabLabel(
               label: 'Get Help',
@@ -119,6 +90,13 @@ class _UserProfileBodyState extends State<UserProfileBody> {
             label: 'About',
             icon: Icons.help_outline,
             onTap: () {},
+          ),
+          ListButton(
+            label: 'Sign Out',
+            icon: Icons.outbond_outlined,
+            onTap: () {
+              signingout();
+            },
           ),
         ],
       ),
